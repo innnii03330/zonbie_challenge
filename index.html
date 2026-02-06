@@ -11,18 +11,27 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
             color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
 
         .screen {
             display: none;
-            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             padding: 20px;
+            overflow-y: auto;
             animation: fadeIn 0.5s ease-in;
         }
 
@@ -37,11 +46,16 @@
 
         /* 시작 화면 */
         #startScreen {
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            overflow: hidden;
+        }
+
+        #startScreen.active {
+            display: flex;
         }
 
         .zombie-icon {
@@ -86,6 +100,11 @@
         }
 
         /* 튜토리얼 화면 */
+        #tutorial1Screen,
+        #tutorial2Screen {
+            padding-top: 50px;
+        }
+
         .tutorial-content {
             max-width: 600px;
             margin: 0 auto;
@@ -94,13 +113,6 @@
             border-radius: 20px;
             padding: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        #tutorial1Screen,
-        #tutorial2Screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .tutorial-title {
@@ -263,22 +275,31 @@
 
         .tag-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
             margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .tag-btn {
-            padding: 15px 20px;
-            font-size: 1.1em;
-            border: 2px solid;
-            border-radius: 15px;
+            aspect-ratio: 1;
+            padding: 0;
+            font-size: 0.75em;
+            border: 3px solid;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
             background: rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.2;
         }
 
         .tag-btn:hover {
@@ -462,7 +483,11 @@
                 gap: 10px;
             }
             .tag-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 8px;
+            }
+            .tag-btn {
+                font-size: 0.65em;
             }
         }
     </style>
@@ -504,7 +529,7 @@
     <div id="tutorial2Screen" class="screen">
         <div class="tutorial-content">
             <h2 class="tutorial-title">존중도감</h2>
-            <img src="/mnt/user-data/uploads/dogam.jpg" alt="존중도감" class="tutorial-image">
+            <img src="dogam.jpg" alt="존중도감" class="tutorial-image">
             <button class="next-btn" onclick="showZombieSelect()">게임 시작</button>
         </div>
     </div>
@@ -520,7 +545,7 @@
         <button class="back-btn" onclick="showZombieSelect()">← 돌아가기</button>
         <div class="detail-content">
             <div class="detail-image-container">
-                <img src="/mnt/user-data/uploads/zombie1.png" alt="존비 상세" class="detail-image">
+                <img src="zombie1.png" alt="존비 상세" class="detail-image">
             </div>
             
             <div class="tag-selection">
@@ -533,16 +558,16 @@
                 </div>
                 
                 <div class="tag-grid" id="tagGrid">
-                    <button class="tag-btn color-red" data-tag="성폭력" data-color="red" onclick="selectTag(this)">성폭력 🔴</button>
-                    <button class="tag-btn color-orange" data-tag="성착취" data-color="orange" onclick="selectTag(this)">성착취 🟠</button>
-                    <button class="tag-btn color-yellow" data-tag="속임" data-color="yellow" onclick="selectTag(this)">속임(가스라이팅포함) 🟡</button>
-                    <button class="tag-btn color-green" data-tag="디지털(장)폭력" data-color="green" onclick="selectTag(this)">디지털(장)폭력 🟢</button>
-                    <button class="tag-btn color-blue" data-tag="데이트폭력" data-color="blue" onclick="selectTag(this)">데이트폭력 🔵</button>
-                    <button class="tag-btn color-purple" data-tag="고정관념(편견)" data-color="purple" onclick="selectTag(this)">고정관념(편견) 🟣</button>
-                    <button class="tag-btn color-brown" data-tag="방관" data-color="brown" onclick="selectTag(this)">방관 🟤</button>
-                    <button class="tag-btn color-green" data-tag="성희롱" data-color="green" onclick="selectTag(this)">성희롱 🟢</button>
-                    <button class="tag-btn color-cyan" data-tag="외모평가(하늘색)" data-color="cyan" onclick="selectTag(this)">외모평가(하늘색) 🔵</button>
-                    <button class="tag-btn color-pink" data-tag="성적대상화" data-color="pink" onclick="selectTag(this)">성적대상화 🩷</button>
+                    <button class="tag-btn color-red" data-tag="성폭력" data-color="red" onclick="selectTag(this)">성폭력</button>
+                    <button class="tag-btn color-orange" data-tag="성착취" data-color="orange" onclick="selectTag(this)">성착취</button>
+                    <button class="tag-btn color-yellow" data-tag="속임" data-color="yellow" onclick="selectTag(this)">속임</button>
+                    <button class="tag-btn color-green" data-tag="디지털(장)폭력" data-color="green" onclick="selectTag(this)">디지털폭력</button>
+                    <button class="tag-btn color-blue" data-tag="데이트폭력" data-color="blue" onclick="selectTag(this)">데이트폭력</button>
+                    <button class="tag-btn color-purple" data-tag="고정관념(편견)" data-color="purple" onclick="selectTag(this)">고정관념</button>
+                    <button class="tag-btn color-brown" data-tag="방관" data-color="brown" onclick="selectTag(this)">방관</button>
+                    <button class="tag-btn color-green" data-tag="성희롱" data-color="green" onclick="selectTag(this)">성희롱</button>
+                    <button class="tag-btn color-cyan" data-tag="외모평가(하늘색)" data-color="cyan" onclick="selectTag(this)">외모평가</button>
+                    <button class="tag-btn color-pink" data-tag="성적대상화" data-color="pink" onclick="selectTag(this)">성적대상화</button>
                 </div>
                 
                 <button class="submit-btn" id="submitBtn" onclick="checkAnswer()" disabled>제출하기</button>
@@ -584,6 +609,8 @@
                 screen.classList.remove('active');
             });
             document.getElementById(screenId).classList.add('active');
+            // 페이지 전환 시 스크롤을 맨 위로
+            document.getElementById(screenId).scrollTop = 0;
         }
 
         function showTutorial1() {
