@@ -673,7 +673,7 @@
                 
                 // 이미지 파일명 생성 (01, 02, ... 25)
                 const imageNum = i.toString().padStart(2, '0');
-                const imagePath = `/zombie_${imageNum}.png`;
+                const imagePath = `icon/zombie_${imageNum}.png`;
                 
                 card.innerHTML = `
                     <img src="${imagePath}" alt="존비 ${i}" class="zombie-image">
@@ -836,4 +836,5 @@
     </script>
 </body>
 </html>
+
 
